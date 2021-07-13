@@ -1,0 +1,160 @@
+// Parent Component
+import React, {useState} from "react";
+import { Button, Container, Typography, Grid, Box, TextField, makeStyles } from "@material-ui/core";
+import Child from "./Child_1";
+
+const useStyles = makeStyles(theme => ({
+    root:{
+        border : '1px solid black',
+        padding: '10px',
+        margin: '50px 200px 50px 200px',
+        backgroundColor: 'lightgrey',
+    },
+
+    innerBox : {
+        border : '1px solid black',
+        padding: '15px',
+        margin: '15px',
+        backgroundColor: 'lightgrey',
+    },
+
+    typography: {
+        textAlign: 'center',
+    }, 
+
+    textfield: {
+        margin: '5px 0px 5px 0px' 
+    }
+}))
+
+function Parent() {
+    const classes = useStyles();
+    const [email, setEmail] = useState();
+
+    let data11 = 'Hitesh Gohel';
+
+    // code of child component(retrive data)
+    const getData = (item) => {
+        setEmail(item);
+    }
+
+    return(
+        <>
+        <Box className={classes.root}>
+            <Typography variant='h4' className={classes.typography}>Parent Component</Typography>        
+            <Grid container justify='center'>
+                <Grid item lg={5} >
+                    <Box className={classes.innerBox}>
+                    <Typography variant='h3' color='primary' className={classes.typography}>Parent to Child</Typography>
+                    <Typography variant='subtitle2' className={classes.typography}>Name : {data11}</Typography>
+                    <Typography variant='subtitle1' className={classes.typography}>Click Send button to retrive data from Child component</Typography>
+                    <TextField fullWidth  
+                        className={classes.textfield}
+                        name='email' placeholder='Email' 
+                        variant='outlined' size='small'
+                        value={email}
+                     />
+                    </Box>
+                </Grid>
+            </Grid>
+        </Box>
+                
+        <Child name={data11} data={getData} />
+                
+        </>
+    );
+}
+
+export default Parent;
+
+------------------------------------------------------------------------------------------------------------------------
+
+// Child-1 Component
+import React, {useState} from "react";
+import { Button, Typography, Grid, Box, TextField, makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles(theme => ({
+    root:{
+        border : '1px solid black',
+        padding: '10px',
+        margin: '10px 200px 10px 200px',
+        backgroundColor: 'lightgrey',
+    },
+
+    innerBox : {
+        border : '1px solid black',
+        padding: '15px',
+        margin: '15px',
+        backgroundColor: 'lightgrey',
+    },
+
+    typography: {
+        textAlign: 'center',
+    }, 
+
+    textfield: {
+        margin: '5px 0px 5px 0px' 
+    }
+}))
+
+function Child_1(props) {
+    const classes = useStyles();
+    
+    let age = '21';
+
+    // hooks
+    const [name, setName] = useState('');
+
+    const email = 'hiteshgohel@gmail.com';
+
+    // Fetch Name from Parent component
+    const FetchData = () => {
+        setName(props.name)
+    }
+
+    // send data to Parent component
+    const SendData = () => {
+        props.data(email)
+    }
+
+
+    return(
+        <>
+        <Box className={classes.root}>
+        <Typography variant='h4' className={classes.typography}>Child_1 Component</Typography>
+
+            {/* Child_1 to Parent */}
+            <Grid container justify='center'>
+                <Grid item lg={5} >
+                    <Box className={classes.innerBox}>
+                    <Typography variant='h3' color='primary' className={classes.typography}>Child_1 to Parent</Typography>
+                    <Typography variant='subtitle2' className={classes.typography}>Email : {email}</Typography>
+                    <Typography variant='subtitle2' className={classes.typography}>Age : {age}</Typography>
+                    <Typography variant='subtitle1' className={classes.typography}>Click Fetch button to retrive data from Parent component</Typography>
+                    <TextField fullWidth  
+                        className={classes.textfield}
+                        variant='outlined' size='small'
+                        name='name' placeholder='Name'
+                        value={name}
+                    />
+
+                    <Grid container justify='center' spacing={4}>
+                        <Grid item lg={4}>
+                            <Button variant="contained" color='primary' fullWidth onClick={() => FetchData()}>Fetch</Button>                
+                        </Grid>
+
+                        <Grid item lg={4}>
+                            <Button variant="contained" color='primary' fullWidth onClick={() => SendData()}>Send</Button>
+                        </Grid>
+                    </Grid>
+                    </Box>
+                </Grid>
+            </Grid>
+
+        </Box>
+
+        </>
+    );
+}
+
+export default Child_1;
